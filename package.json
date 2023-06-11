@@ -41,6 +41,7 @@
     "unplugin-icons": "^0.16.3",
     "vite": "^4.3.9"
   },
+  "packageManager": "pnpm@8.6.1",
   "browserslist": {
     "production": [
       ">0.2%",
