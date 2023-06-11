@@ -20,12 +20,6 @@ dependencies:
   svelte-file-dropzone:
     specifier: ^2.0.1
     version: 2.0.1(svelte@3.59.1)
-  svelte-headlessui:
-    specifier: ^0.0.16
-    version: 0.0.16
-  svelte-transition:
-    specifier: ^0.0.7
-    version: 0.0.7
 
 devDependencies:
   '@iconify-json/ph':
@@ -2267,12 +2261,6 @@ packages:
       svelte: 3.59.1
     dev: false
 
-  /svelte-headlessui@0.0.16:
-    resolution: {integrity: sha512-/jzHXYmVOEl/pI5PekjwwrZJTUBzasSYEAYt4gOxFf4g+3RoHv24NTlNryu+kkE5024ZZlyoeTwO3ClibMxIUA==}
-    dependencies:
-      svelte-transition: 0.0.7
-    dev: false
-
   /svelte-hmr@0.15.2(svelte@3.59.1):
     resolution: {integrity: sha512-q/bAruCvFLwvNbeE1x3n37TYFb3mTBJ6TrCq6p2CoFbSTNhDE9oAtEfpy+wmc9So8AG0Tja+X0/mJzX9tSfvIg==}
     engines: {node: ^12.20 || ^14.13.1 || >= 16}
@@ -2330,10 +2318,6 @@ packages:
       svelte: 3.59.1
       typescript: 5.1.3
     dev: true
-
-  /svelte-transition@0.0.7:
-    resolution: {integrity: sha512-YMbl+eIkzeYKBz6E/I8KI8RMezhqB38t2B/Mx8BotmtiN+5wnKath7CWDc+8U9zKGJ/iUYHmx4MwQjIzo05nVg==}
-    dev: false
 
   /svelte@3.59.1:
     resolution: {integrity: sha512-pKj8fEBmqf6mq3/NfrB9SLtcJcUvjYSWyePlfCqN9gujLB25RitWK8PvFzlwim6hD/We35KbPlRteuA6rnPGcQ==}
