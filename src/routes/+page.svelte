@@ -1,17 +1,67 @@
 <script lang="ts">
+  import { nanoid } from "nanoid";
+  import axios from "axios";
   import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
   import Container from "$lib/Container.svelte";
+  import FileUploadList from "$lib/FileUploadList.svelte";
   import CloudArrowUpDuotone from "virtual:icons/ph/cloud-arrow-up-duotone";
+  import type { FileUploadItem } from "$lib/types";
 
-  const files = {
-    accepted: [] as File[],
-    rejected: [] as File[],
+  let fileUploadList: FileUploadItem[] = [];
+
+  const updateFileUploadById = (id: string, update: Partial<FileUploadItem>) => {
+    fileUploadList = fileUploadList.map((file) => (file.id === id ? { ...file, ...update } : file));
   };
 
   const handleFilesSelect = (e: CustomEvent<any>) => {
     const { acceptedFiles, fileRejections } = e.detail;
-    files.accepted = [...files.accepted, ...acceptedFiles];
-    files.rejected = [...files.rejected, ...fileRejections];
+
+    if (Array.isArray(fileRejections) && fileRejections.length) {
+      // TODO: Handle file rejections using toast notifications
+      console.error(fileRejections);
+      return;
+    }
+
+    if (!Array.isArray(acceptedFiles) || !acceptedFiles.length) {
+      return;
+    }
+
+    const newList = acceptedFiles.map(
+      (file: File) =>
+        ({
+          id: nanoid(),
+          file,
+          status: "pending",
+          progress: 0,
+        } satisfies FileUploadItem),
+    );
+
+    fileUploadList = [...fileUploadList, ...newList];
+
+    Promise.all(newList.map(uploadFile));
+  };
+
+  const uploadFile = async (fileInfo: FileUploadItem) => {
+    const data = new FormData();
+    data.append("file", fileInfo.file);
+
+    try {
+      await axios.put("/api/shrink", data, {
+        onUploadProgress: (progressEvent) => {
+          const progress = Math.round((progressEvent.loaded * 100) / (progressEvent.total || 1));
+          if (progress >= 100) {
+            updateFileUploadById(fileInfo.id, { progress, status: "finished" });
+          } else {
+            updateFileUploadById(fileInfo.id, { progress, status: "uploading" });
+          }
+        },
+      });
+
+      updateFileUploadById(fileInfo.id, { progress: 100, status: "finished" });
+    } catch (error) {
+      console.error(error);
+      updateFileUploadById(fileInfo.id, { progress: 0, status: "failed" });
+    }
   };
 </script>
 
@@ -34,20 +84,17 @@
         <p class="tp-upload-btn">Upload a file</p>
         <p class="pl-1">or drag and drop</p>
       </div>
-      <p class="text-xs leading-5 text-gray-600">PNG, JPG, GIF up to 10MB</p>
+      <p class="text-xs leading-5 text-gray-600">PNG, JPG, WEBP up to 10MB</p>
     </Dropzone>
   </div>
-  <ol>
-    {#each files.accepted as item}
-      <li>{item.name}</li>
-    {/each}
-  </ol>
+  <div class="h-4" />
+  <FileUploadList {fileUploadList} />
 </Container>
 
 <style lang="scss">
   .tp-title {
     font-family: "Racing Sans One", sans-serif;
-    @apply text-6xl;
+    @apply text-7xl;
 
     @media (min-width: 640px) {
       @apply text-8xl;
