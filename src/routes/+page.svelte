@@ -49,11 +49,10 @@
       await axios.put("/api/shrink", data, {
         onUploadProgress: (progressEvent) => {
           const progress = Math.round((progressEvent.loaded * 100) / (progressEvent.total || 1));
-          if (progress >= 100) {
-            updateFileUploadById(fileInfo.id, { progress, status: "finished" });
-          } else {
-            updateFileUploadById(fileInfo.id, { progress, status: "uploading" });
-          }
+          updateFileUploadById(fileInfo.id, {
+            progress,
+            status: progress >= 100 ? "processing" : "uploading",
+          });
         },
       });
 

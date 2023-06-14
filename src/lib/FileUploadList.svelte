@@ -9,6 +9,8 @@
         return "Pending";
       case "uploading":
         return `${item.progress}%`;
+      case "processing":
+        return "Processing";
       case "finished":
         return "Finished";
       case "failed":
