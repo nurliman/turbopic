@@ -85,7 +85,26 @@
       updateFileUploadById(fileInfo.id, { progress: 0, status: "failed" });
     }
   };
+
+  const title = "Turbopic - Fast and Efficient Image Compression Tool";
+  const description =
+    "Turbopic is a powerful online image compression tool that optimizes your images for web without compromising quality. Compress and reduce file sizes with incredible speed, enhancing your website's performance and user experience.";
 </script>
+
+<svelte:head>
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <!-- TODO: Add url -->
+  <!-- TODO: Add image -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Turbopic" />
+  <meta
+    name="keywords"
+    content="image compression, compress images, optimize images, reduce file size, web performance, image optimization tool"
+  />
+</svelte:head>
 
 <Container class="col-span-full py-8">
   <h1 class="tp-title text-center">Turbopic.</h1>
