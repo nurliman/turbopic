@@ -1,6 +1,7 @@
 <script lang="ts">
   import { nanoid } from "nanoid";
   import axios from "axios";
+  import Toastify from "toastify-js";
   import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
   import Container from "$lib/Container.svelte";
   import FileUploadList from "$lib/FileUploadList.svelte";
@@ -13,12 +14,23 @@
     fileUploadList = fileUploadList.map((file) => (file.id === id ? { ...file, ...update } : file));
   };
 
+  const showErrorMessage = (message: string) => {
+    const toast = Toastify({
+      text: message,
+      duration: 5000,
+      onClick: () => toast.hideToast(),
+      gravity: "bottom",
+      className: "toast-error",
+    });
+    toast.showToast();
+    return toast;
+  };
+
   const handleFilesSelect = (e: CustomEvent<any>) => {
     const { acceptedFiles, fileRejections } = e.detail;
 
     if (Array.isArray(fileRejections) && fileRejections.length) {
-      // TODO: Handle file rejections using toast notifications
-      console.error(fileRejections);
+      showErrorMessage("Only images are allowed!");
       return;
     }
 
@@ -59,6 +71,7 @@
       updateFileUploadById(fileInfo.id, { progress: 100, status: "finished" });
     } catch (error) {
       console.error(error);
+      showErrorMessage("Something went wrong!");
       updateFileUploadById(fileInfo.id, { progress: 0, status: "failed" });
     }
   };
@@ -147,5 +160,12 @@
         height: 88%;
       }
     }
+  }
+
+  :global(.toast-error) {
+    color: #fff;
+    background: #ff2626;
+    border: 2px solid #000000;
+    box-shadow: 2px 2px 0px #000000;
   }
 </style>

@@ -1,7 +1,8 @@
 <script>
   import "@fontsource-variable/inter";
   import "@fontsource/racing-sans-one";
-  import "../app.css"
+  import "toastify-js/src/toastify.css";
+  import "../app.css";
 </script>
 
 <main>
