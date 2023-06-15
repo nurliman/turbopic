@@ -6,7 +6,7 @@
   import Container from "$lib/Container.svelte";
   import FileUploadList from "$lib/FileUploadList.svelte";
   import CloudArrowUpDuotone from "virtual:icons/ph/cloud-arrow-up-duotone";
-  import type { FileUploadItem } from "$lib/types";
+  import type { FileUploadItem, ResponseServer, ShrinkedImage } from "$lib/types";
 
   let fileUploadList: FileUploadItem[] = [];
 
@@ -58,7 +58,7 @@
     data.append("file", fileInfo.file);
 
     try {
-      await axios.put("/api/shrink", data, {
+      const response = await axios.put<ResponseServer<ShrinkedImage>>("/api/shrink", data, {
         onUploadProgress: (progressEvent) => {
           const progress = Math.round((progressEvent.loaded * 100) / (progressEvent.total || 1));
           updateFileUploadById(fileInfo.id, {
@@ -68,7 +68,17 @@
         },
       });
 
-      updateFileUploadById(fileInfo.id, { progress: 100, status: "finished" });
+      if (!response.data.status) {
+        showErrorMessage(response.data.message || "Something went wrong!");
+        updateFileUploadById(fileInfo.id, { progress: 0, status: "failed" });
+        return;
+      }
+
+      updateFileUploadById(fileInfo.id, {
+        progress: 100,
+        status: "finished",
+        result: response.data.data,
+      });
     } catch (error) {
       console.error(error);
       showErrorMessage("Something went wrong!");

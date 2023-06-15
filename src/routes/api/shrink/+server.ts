@@ -45,6 +45,7 @@ export const PUT = (async ({ request }) => {
           Key: `${id}/${newFilename}`,
           Body: compressedImageBuffer,
           ContentType: "image/webp",
+          ContentDisposition: `attachment; filename="${newFilename}"`,
         }),
       )
       .catch((err) => {

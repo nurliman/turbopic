@@ -1,10 +1,3 @@
-export type FileUploadItem = {
-  id: string;
-  file: File;
-  progress: number;
-  status: "pending" | "uploading" | "processing" | "finished" | "failed";
-};
-
 export type ResponseServer<T = any> = {
   status: boolean;
   message: string;
@@ -17,4 +10,12 @@ export type ShrinkedImage = {
   size: number;
   originalSize: number;
   reductionPercentage: number;
+};
+
+export type FileUploadItem = {
+  id: string;
+  file: File;
+  progress: number;
+  status: "pending" | "uploading" | "processing" | "finished" | "failed";
+  result?: ShrinkedImage | null;
 };
