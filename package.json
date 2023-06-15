@@ -13,14 +13,17 @@
   },
   "type": "module",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.352.0",
     "@fontsource-variable/inter": "^5.0.3",
     "@fontsource/racing-sans-one": "^5.0.3",
+    "@t3-oss/env-core": "^0.4.0",
     "axios": "^1.4.0",
     "clsx": "^1.2.1",
     "nanoid": "^4.0.2",
     "pretty-bytes": "^6.1.0",
     "sharp": "^0.32.1",
-    "svelte-file-dropzone": "^2.0.1"
+    "svelte-file-dropzone": "^2.0.1",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@iconify-json/ph": "^1.1.5",
