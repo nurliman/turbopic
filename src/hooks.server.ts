@@ -3,6 +3,7 @@ import { json } from "@sveltejs/kit";
 import { verify } from "paseto-ts/v4";
 import { env } from "$lib/env.server";
 import { responseServerError } from "$lib/utils";
+import { ACCESS_TOKEN_COOKIE_NAME } from "$lib/constants";
 import type { Handle } from "@sveltejs/kit";
 
 export const handle: Handle = async ({ event, resolve }) => {
@@ -17,7 +18,7 @@ export const handle: Handle = async ({ event, resolve }) => {
   if (isApiRequest && !isAuthToken && !isAuthTokenRefresh) {
     let token: string | null | undefined;
 
-    token = event.cookies.get("accessToken");
+    token = event.cookies.get(ACCESS_TOKEN_COOKIE_NAME);
     token ||= event.request.headers.get("Authorization");
     token ||= event.request.headers.get("x-access-token");
     token = token?.replace?.("Bearer ", "");

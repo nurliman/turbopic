@@ -1,6 +1,7 @@
 import Cookie from "js-cookie";
 import axios from "axios";
 import axiosRetry from "axios-retry";
+import { ALREADY_AUTHENTICATED_COOKIE_NAME } from "$lib/constants";
 import { singleflightGetToken, singleflightRefreshToken } from "$lib/apis/authApi";
 
 const theAxios = axios.create({
@@ -15,7 +16,7 @@ const theAxios = axios.create({
 });
 
 theAxios.interceptors.request.use(async (config) => {
-  const isAuthenticated = Cookie.get("alreadyAuthenticated") === "true";
+  const isAuthenticated = Cookie.get(ALREADY_AUTHENTICATED_COOKIE_NAME) === "true";
 
   if (!isAuthenticated) {
     await singleflightGetToken();

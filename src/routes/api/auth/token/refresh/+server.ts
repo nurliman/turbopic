@@ -4,6 +4,11 @@ import { nanoid } from "nanoid";
 import { env } from "$lib/env.server";
 import { theSeconds } from "$lib/theSeconds";
 import { responseServer, responseServerError } from "$lib/utils";
+import {
+  ACCESS_TOKEN_COOKIE_NAME,
+  ALREADY_AUTHENTICATED_COOKIE_NAME,
+  REFRESH_TOKEN_COOKIE_NAME,
+} from "$lib/constants";
 import type { Credentials } from "$lib/types";
 import type { RequestHandler } from "./$types";
 
@@ -12,7 +17,7 @@ export const POST = (async ({ cookies, request }) => {
     const requestBody = await request.json().catch(() => {});
 
     let refreshToken: string | undefined;
-    refreshToken = cookies.get("refreshToken");
+    refreshToken = cookies.get(REFRESH_TOKEN_COOKIE_NAME);
     refreshToken ||= requestBody?.refreshToken;
 
     if (!refreshToken) {
@@ -40,7 +45,7 @@ export const POST = (async ({ cookies, request }) => {
       exp: env.REFRESH_TOKEN_EXPIRATION,
     });
 
-    cookies.set("accessToken", newAccessToken, {
+    cookies.set(ACCESS_TOKEN_COOKIE_NAME, newAccessToken, {
       path: "/",
       httpOnly: true,
       secure: env.NODE_ENV === "production",
@@ -48,7 +53,7 @@ export const POST = (async ({ cookies, request }) => {
       maxAge: theSeconds(env.ACCESS_TOKEN_EXPIRATION),
     });
 
-    cookies.set("refreshToken", newRefreshToken, {
+    cookies.set(REFRESH_TOKEN_COOKIE_NAME, newRefreshToken, {
       path: "/",
       httpOnly: true,
       secure: env.NODE_ENV === "production",
@@ -56,7 +61,7 @@ export const POST = (async ({ cookies, request }) => {
       maxAge: theSeconds(env.REFRESH_TOKEN_EXPIRATION),
     });
 
-    cookies.set("alreadyAuthenticated", "true", {
+    cookies.set(ALREADY_AUTHENTICATED_COOKIE_NAME, "true", {
       path: "/",
       httpOnly: false,
       secure: env.NODE_ENV === "production",

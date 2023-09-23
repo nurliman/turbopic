@@ -4,6 +4,11 @@ import { nanoid } from "nanoid";
 import { env } from "$lib/env.server";
 import { theSeconds } from "$lib/theSeconds";
 import { responseServer, responseServerError } from "$lib/utils";
+import {
+  ACCESS_TOKEN_COOKIE_NAME,
+  ALREADY_AUTHENTICATED_COOKIE_NAME,
+  REFRESH_TOKEN_COOKIE_NAME,
+} from "$lib/constants";
 import type { Credentials } from "$lib/types";
 import type { RequestHandler } from "./$types";
 
@@ -12,7 +17,7 @@ export const POST = (({ cookies }) => {
     let guestID: string;
 
     // try to get the guestID from the refreshToken if it exists
-    const oldRefreshToken = cookies.get("refreshToken");
+    const oldRefreshToken = cookies.get(REFRESH_TOKEN_COOKIE_NAME);
     if (oldRefreshToken) {
       let verifiedRefreshToken: ReturnType<typeof verify> | undefined;
 
@@ -38,7 +43,7 @@ export const POST = (({ cookies }) => {
       exp: env.REFRESH_TOKEN_EXPIRATION,
     });
 
-    cookies.set("accessToken", accessToken, {
+    cookies.set(ACCESS_TOKEN_COOKIE_NAME, accessToken, {
       path: "/",
       httpOnly: true,
       secure: env.NODE_ENV === "production",
@@ -46,7 +51,7 @@ export const POST = (({ cookies }) => {
       maxAge: theSeconds(env.ACCESS_TOKEN_EXPIRATION),
     });
 
-    cookies.set("refreshToken", refreshToken, {
+    cookies.set(REFRESH_TOKEN_COOKIE_NAME, refreshToken, {
       path: "/",
       httpOnly: true,
       secure: env.NODE_ENV === "production",
@@ -54,7 +59,7 @@ export const POST = (({ cookies }) => {
       maxAge: theSeconds(env.REFRESH_TOKEN_EXPIRATION),
     });
 
-    cookies.set("alreadyAuthenticated", "true", {
+    cookies.set(ALREADY_AUTHENTICATED_COOKIE_NAME, "true", {
       path: "/",
       httpOnly: false,
       secure: env.NODE_ENV === "production",
