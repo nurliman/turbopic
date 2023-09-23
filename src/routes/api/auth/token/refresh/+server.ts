@@ -56,6 +56,14 @@ export const POST = (async ({ cookies, request }) => {
       maxAge: theSeconds(env.REFRESH_TOKEN_EXPIRATION),
     });
 
+    cookies.set("alreadyAuthenticated", "true", {
+      path: "/",
+      httpOnly: false,
+      secure: env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: theSeconds(env.REFRESH_TOKEN_EXPIRATION),
+    });
+
     return json(
       responseServer<Credentials>({
         accessToken: newAccessToken,
