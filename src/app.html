@@ -1,10 +1,22 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%sveltekit.assets%/favicon.png" />
     <meta name="viewport" content="width=device-width" />
     %sveltekit.head%
+    <!-- TODO: move google tag manager to a component -->
+    <!-- TODO: use environment variables for google tag manager -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FK86TVQGTV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-FK86TVQGTV");
+    </script>
   </head>
   <body data-sveltekit-preload-data="hover" class="flex h-full flex-col">
     <div class="contents">%sveltekit.body%</div>
