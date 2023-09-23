@@ -2,6 +2,7 @@ import { json } from "@sveltejs/kit";
 import { sign } from "paseto-ts/v4";
 import { nanoid } from "nanoid";
 import { env } from "$lib/env.server";
+import { theSeconds } from "$lib/theSeconds";
 import { responseServer, responseServerError } from "$lib/utils";
 import type { Credentials } from "$lib/types";
 import type { RequestHandler } from "./$types";
@@ -26,6 +27,7 @@ export const POST = (({ cookies }) => {
       httpOnly: true,
       secure: env.NODE_ENV === "production",
       sameSite: "strict",
+      maxAge: theSeconds(env.ACCESS_TOKEN_EXPIRATION),
     });
 
     cookies.set("refreshToken", refreshToken, {
@@ -33,6 +35,7 @@ export const POST = (({ cookies }) => {
       httpOnly: true,
       secure: env.NODE_ENV === "production",
       sameSite: "strict",
+      maxAge: theSeconds(env.REFRESH_TOKEN_EXPIRATION),
     });
 
     return json(
