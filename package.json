@@ -20,6 +20,7 @@
     "axios": "^1.5.0",
     "clsx": "^2.0.0",
     "nanoid": "^5.0.1",
+    "paseto-ts": "^1.5.1",
     "pretty-bytes": "^6.1.1",
     "sharp": "^0.32.6",
     "svelte-file-dropzone": "^2.0.2",
