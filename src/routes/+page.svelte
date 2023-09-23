@@ -2,8 +2,8 @@
   import { nanoid } from "nanoid";
   import Toastify from "toastify-js";
   import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
-  import Container from "$lib/Container.svelte";
-  import FileUploadList from "$lib/FileUploadList.svelte";
+  import Container from "$lib/components/Container.svelte";
+  import FileUploadList from "$lib/components/FileUploadList.svelte";
   import CloudArrowUpDuotone from "virtual:icons/ph/cloud-arrow-up-duotone";
   import { theAxios } from "$lib/theAxios";
   import type { FileUploadItem, ResponseServer, ShrinkedImage } from "$lib/types";
