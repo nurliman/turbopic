@@ -4,7 +4,7 @@ import { nanoid } from "nanoid";
 import { json } from "@sveltejs/kit";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { env } from "$lib/env.server";
-import { s3 } from "$lib/s3";
+import { theS3Client } from "$lib/theS3Client.server";
 import { changeFileExtension, isFile, responseServer, responseServerError } from "$lib/utils";
 import type { RequestHandler } from "./$types";
 import type { ShrinkedImage } from "$lib/types";
@@ -38,7 +38,7 @@ export const PUT = (async ({ request }) => {
     // upload to s3
     const newFilename = changeFileExtension(file.name, "webp");
 
-    await s3
+    await theS3Client
       .send(
         new PutObjectCommand({
           Bucket: env.S3_BUCKET_NAME,
