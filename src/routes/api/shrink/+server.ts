@@ -6,8 +6,13 @@ import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { env } from "$lib/env.server";
 import { theS3Client } from "$lib/theS3Client.server";
 import { changeFileExtension, isFile, responseServer, responseServerError } from "$lib/utils";
+import type { Config } from "@sveltejs/adapter-vercel";
 import type { RequestHandler } from "./$types";
 import type { ShrinkedImage } from "$lib/types";
+
+export const config: Config = {
+  runtime: "nodejs18.x",
+};
 
 export const PUT = (async ({ request }) => {
   try {

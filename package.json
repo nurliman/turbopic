@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@iconify-json/ph": "^1.1.6",
-    "@sveltejs/adapter-auto": "^2.1.0",
+    "@sveltejs/adapter-vercel": "^3.0.3",
     "@sveltejs/kit": "^1.25.0",
     "@types/js-cookie": "^3.0.4",
     "@types/ms": "^0.7.31",
