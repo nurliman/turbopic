@@ -1,5 +1,5 @@
 import { json } from "@sveltejs/kit";
-import { sign } from "paseto-ts/v4";
+import { sign, verify } from "paseto-ts/v4";
 import { nanoid } from "nanoid";
 import { env } from "$lib/env.server";
 import { theSeconds } from "$lib/theSeconds";
@@ -9,7 +9,23 @@ import type { RequestHandler } from "./$types";
 
 export const POST = (({ cookies }) => {
   try {
-    const guestID = nanoid();
+    let guestID: string;
+
+    // try to get the guestID from the refreshToken if it exists
+    const oldRefreshToken = cookies.get("refreshToken");
+    if (oldRefreshToken) {
+      let verifiedRefreshToken: ReturnType<typeof verify> | undefined;
+
+      try {
+        verifiedRefreshToken = verify(env.REFRESH_TOKEN_PUBLIC_KEY, oldRefreshToken);
+      } catch (error) {
+        return json(responseServerError("Unauthorized"), { status: 401 });
+      }
+
+      guestID = verifiedRefreshToken?.payload?.sub!;
+    }
+
+    guestID ||= nanoid();
 
     const accessToken = sign(env.ACCESS_TOKEN_SECRET_KEY, {
       sub: guestID,
@@ -37,7 +53,7 @@ export const POST = (({ cookies }) => {
       sameSite: "strict",
       maxAge: theSeconds(env.REFRESH_TOKEN_EXPIRATION),
     });
-
+    
     return json(
       responseServer<Credentials>({
         accessToken,
