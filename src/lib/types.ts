@@ -19,3 +19,8 @@ export type FileUploadItem = {
   status: "pending" | "uploading" | "processing" | "finished" | "failed";
   result?: ShrinkedImage | null;
 };
+
+export type Credentials = {
+  accessToken: string;
+  refreshToken: string;
+};
