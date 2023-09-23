@@ -24,3 +24,9 @@ export type Credentials = {
   accessToken: string;
   refreshToken: string;
 };
+
+export type TokenCheckResponse = {
+  isAuthenticated: boolean;
+  userID: string;
+};
+
