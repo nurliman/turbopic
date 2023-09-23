@@ -1,11 +1,11 @@
 <script lang="ts">
   import { nanoid } from "nanoid";
-  import axios from "axios";
   import Toastify from "toastify-js";
   import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
   import Container from "$lib/Container.svelte";
   import FileUploadList from "$lib/FileUploadList.svelte";
   import CloudArrowUpDuotone from "virtual:icons/ph/cloud-arrow-up-duotone";
+  import { theAxios } from "$lib/theAxios";
   import type { FileUploadItem, ResponseServer, ShrinkedImage } from "$lib/types";
 
   let fileUploadList: FileUploadItem[] = [];
@@ -58,7 +58,10 @@
     data.append("file", fileInfo.file);
 
     try {
-      const response = await axios.put<ResponseServer<ShrinkedImage>>("/api/shrink", data, {
+      const response = await theAxios.put<ResponseServer<ShrinkedImage>>("/api/shrink", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
         onUploadProgress: (progressEvent) => {
           const progress = Math.round((progressEvent.loaded * 100) / (progressEvent.total || 1));
           updateFileUploadById(fileInfo.id, {
