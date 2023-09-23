@@ -1,0 +1,20 @@
+{
+  "rewrites": [
+    {
+      "source": "/proxy/google-analytics/:match*",
+      "destination": "https://www.google-analytics.com/:match*"
+    },
+    {
+      "source": "/proxy/google-ad-services/:match*",
+      "destination": "https://www.googleadservices.com/:match*"
+    },
+    {
+      "source": "/proxy/google-tag-manager/:match*",
+      "destination": "https://www.googletagmanager.com/:match*"
+    },
+    {
+      "source": "/proxy/googleads-g-doubleclick/:match*",
+      "destination": "https://googleads.g.doubleclick.net/:match*"
+    }
+  ]
+}
