@@ -45,7 +45,7 @@
           file,
           status: "pending",
           progress: 0,
-        } satisfies FileUploadItem),
+        }) satisfies FileUploadItem,
     );
 
     fileUploadList = [...fileUploadList, ...newList];
@@ -132,7 +132,7 @@
   <FileUploadList {fileUploadList} />
 </Container>
 
-<style lang="scss">
+<style lang="postcss">
   .tp-title {
     font-family: "Racing Sans One", sans-serif;
     @apply text-7xl;

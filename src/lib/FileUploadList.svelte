@@ -65,7 +65,7 @@
   {/each}
 </ol>
 
-<style lang="scss">
+<style lang="postcss">
   ol {
     list-style: none;
     padding: 0;
